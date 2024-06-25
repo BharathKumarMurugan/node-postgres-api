@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const {graphqlHTTP} = require("express-graphql");
+const {schema, root} = require("./graphql/schema");
 const db = require("./queries");
 
 const app = express();
@@ -13,18 +15,24 @@ app.use(
     extended: true,
   })
 );
-app.use((req, res, next) => {
-  const error = new Error("Something went wrong");
-  next(error);
-});
-app.use((err, req, res, next) => {
-  console.error("Error: ", err.message);
-  res.status(500).send("Internal Server error");
-});
+// app.use((req, res, next) => {
+//   const error = new Error("Something went wrong");
+//   next(error);
+// });
+// app.use((err, req, res, next) => {
+//   console.error("Error: ", err.message);
+//   res.status(500).send("Internal Server error");
+// });
 
 app.get("/", (req, res) => {
   res.send("All set to go");
 });
+
+app.use("/graphql", graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true
+}));
 
 app.get("/users", db.getUsers);
 app.get("/users/:id", db.getUserById);
