@@ -110,4 +110,62 @@ mutation{
 }
 ```
 4. update a user's data
+```
+mutation {
+  updateUser(
+    id: 11
+    name: "Bharath Kumar"
+    email: "test@test.com"
+  ){
+    id
+    name
+    username
+    email
+    address {
+      street
+      suite
+      city
+      zipcode
+      geo{
+        lat
+        lng
+      }
+    }
+    phone
+    website
+    company{
+      name
+      catchPhrase
+      bs
+    }
+  }
+}
+```
 5. delete a user
+```
+mutation {
+  deleteUser(id: 11) {
+    id
+    name
+    username
+    email
+    address {
+      street
+      suite
+      city
+      zipcode
+      geo{
+        lat
+        lng
+      }
+    }
+    phone
+    website
+    company{
+      name
+      catchPhrase
+      bs
+    }
+  }
+}
+```

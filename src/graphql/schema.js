@@ -23,7 +23,25 @@ const schema = buildSchema(`
       companyName: String
       catchPhrase: String
       bs: String
+      ): User
+    updateUser(
+      id: Int!
+      name: String
+      email: String
+      username: String
+      street: String
+      suite: String
+      city: String
+      zipcode: String
+      lat: String
+      lng: String
+      phone: String
+      website: String
+      companyName: String
+      catchPhrase: String
+      bs: String
     ): User
+    deleteUser(id: Int!): User
   }
   type User {
     id: Int
@@ -58,8 +76,8 @@ const root = {
   // getUserByUserId: async ({ id}) => {
   //   const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
   //   return res.rows[0];
-  getUserByUserId: ({id}) => {
-    return users.find(user => user.id === id);
+  getUserByUserId: ({ id }) => {
+    return users.find((user) => user.id === id);
   },
   getAllUsers: () => {
     return users;
@@ -78,7 +96,7 @@ const root = {
     website,
     companyName,
     catchPhrase,
-    bs
+    bs,
   }) => {
     const newUser = {
       id: users.length + 1,
@@ -92,20 +110,71 @@ const root = {
         zipcode,
         geo: {
           lat,
-          lng
-        }
+          lng,
+        },
       },
       phone,
       website,
       company: {
         name: companyName,
         catchPhrase,
-        bs
-      }
+        bs,
+      },
     };
     users.push(newUser);
     return newUser;
-  }
+  },
+  updateUser: ({
+    id,
+    name,
+    email,
+    username,
+    street,
+    suite,
+    city,
+    zipcode,
+    lat,
+    lng,
+    phone,
+    website,
+    companyName,
+    catchPhrase,
+    bs,
+  }) => {
+    const user = users.find((user) => user.id === id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    user.name = name || user.name;
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.address = {
+      street: street || user.street,
+      suite: suite || user.suite,
+      city: city || user.city,
+      zipcode: zipcode || user.zipcode,
+      geo: {
+        lat: lat || user.lat,
+        lng: lng || user.lng,
+      },
+    };
+    user.phone = phone || user.phone;
+    user.website = website || user.website;
+    user.company = {
+      name: companyName || user.companyName,
+      catchPhrase: catchPhrase || user.catchPhrase,
+      bs: bs || user.bs,
+    };
+    return user;
+  },
+  deleteUser: ({ id }) => {
+    const userIndex = users.findIndex((user) => user.id === id);
+    if (userIndex === -1) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    const deletedUser = users.splice(userIndex, 1);
+    return deletedUser[0];
+  },
 };
 
 module.exports = { schema, root };
