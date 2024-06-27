@@ -1,8 +1,9 @@
 {
   "name": "node-postgres-api",
   "version": "0.0.1",
-  "description": "RESTful API with Node, Express, and Postgres",
+  "description": "RESTful API with Node, Express, GraphqlQL and Postgres",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "nodemon src/index.js"
   },
@@ -31,6 +32,16 @@
   "keywords": [
     "nodejs",
     "express",
-    "postgres"
-  ]
+    "postgres",
+    "graphql"
+  ],
+  "author": "Bharath Kumar Murugan <bharathkumarmurugan2016@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BharathKumarMurugan/node-postgres-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BharathKumarMurugan/node-postgres-api/issues",
+    "email": "bharathkumarmurugan2016@gmail.com"
+  }
 }
